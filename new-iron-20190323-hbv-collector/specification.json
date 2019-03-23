@@ -1,0 +1,30 @@
+{
+    "steps": [
+        {
+            "cwd": "00-start",
+            "name": "start",
+            "script": "./start.sh"
+        },
+        {
+            "collect": true,
+            "cwd": "01-collect",
+            "dependencies": ["start"],
+            "name": "collect",
+            "script": "./sbatch.sh"
+        },
+        {
+            "collect": true,
+            "cwd": "02-stop",
+            "dependencies": ["collect"],
+            "name": "stop",
+            "script": "./sbatch.sh"
+        },
+        {
+            "cwd": "03-error",
+            "dependencies": ["stop"],
+            "error step": true,
+            "name": "error",
+            "script": "./sbatch.sh"
+        }
+    ]
+}

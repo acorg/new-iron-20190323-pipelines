@@ -1,0 +1,19 @@
+# This is the Makefile that should be installed at the top level of the
+# processing. I.e., in the directory where all the sample directories
+# are. It has targets that pull information out from across all samples
+# once they are all individually finished.
+
+.PHONY: all, tar, clean
+
+DIR = lasse-20180425-capture-hbv-results
+
+all:
+	@echo "There is no default make target. Try make tar."
+
+tar:
+	rm -fr $(DIR)
+	mkdir $(DIR)
+	cp {NEO,VK}*/01-collect/*-hbv.{fastq,read-count} $(DIR)
+	cd $(DIR); for i in *.read-count; do echo $$i $$(cat $$i); done | sort -n -k2 -r | sed 's/-hbv\.read-count//' > SUMMARY
+	tar cfj $(DIR).tar.bz2 $(DIR)
+	rm -fr $(DIR)
